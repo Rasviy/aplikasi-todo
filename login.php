@@ -8,13 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $res = $conn->query("SELECT * FROM users WHERE username='$username'");
     $user = $res->fetch_assoc();
 
-    if ($user && password_verify($password, $user['password'])) {
+    // Langsung bandingkan password biasa (plaintext)
+    if ($user && $password == $user['password']) {
         $_SESSION['user'] = [
             'id' => $user['id'],
             'username' => $user['username'],
             'role' => $user['role']
         ];
         header("Location: dashboard.php");
+        exit;
     } else {
         $error = "Login gagal!";
     }

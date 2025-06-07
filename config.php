@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "todo_role_db";
+$db = "todo_db";
 
 $conn = new mysqli($host, $user, $pass, $db);
 
