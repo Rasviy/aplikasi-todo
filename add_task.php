@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         body {
-           margin: 0;
+            margin: 0;
             padding: 0;
             background: url('img/gradient-background-3840x2160-10786.jpg') no-repeat center center fixed;
             background-size: cover;
