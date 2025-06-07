@@ -54,17 +54,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         body {
             margin: 0;
             padding: 0;
-            background-color: #f4f6f9;
+            background: url('img/gradient-background-3840x2160-10786.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: start;
         }
 
         .container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            text-align: center;
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 1100px;
+            width: 95%;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            color: #fff;
         }
 
         h2 {
@@ -85,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         button {
-            background-color: #007bff;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             border: none;
             padding: 10px 20px;
@@ -95,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color:rgb(70, 72, 74);
         }
 
         .back-link {
