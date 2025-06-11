@@ -26,179 +26,145 @@ $result = $conn->query($query);
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Tugas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Tugas</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Marker Felt', 'Comic Sans MS', cursive;
         }
 
         body {
-            margin: 0;
-            padding: 0;
-            background: url('img/gradient-background-3840x2160-10786.jpg') no-repeat center center fixed;
+            background: url('img/e69a4f74b1b0fbdc70c9a6428aa4221e.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: start;
+            padding: 40px 10px;
         }
 
-        .container {
-            margin-top: 50px;
-            background: rgba(255, 255, 255, 0.1);
+        .task-wrapper {
+            background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 1100px;
-            width: 95%;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
-            color: #fff;
+            border-radius: 25px;
+            padding: 30px 20px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        h2, h3 {
-            margin-top: 0;
+        h2 {
+            color: #fff;
+            font-size: 24px;
         }
 
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-
-        .top-bar h2 {
-            font-size: 22px;
-        }
-
-        .top-bar a {
-            text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 25px;
-            margin: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            display: inline-block;
+            margin-bottom: 25px;
             color: #fff;
         }
 
-        .logout {
-            background-color: #e74c3c;
-        }
-
-        .add-task {
-            background-color: #3498db;
-        }
-
-        .table-responsive {
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            min-width: 700px;
-        }
-
-        th, td {
-            padding: 14px;
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        th {
-            background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .btn {
-            padding: 8px 12px;
-            border: none;
+        .top-bar a {
+            background-color: #5d3c2c;
+            color: white;
+            padding: 8px 16px;
             border-radius: 20px;
             text-decoration: none;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
+        .task-item {
+            background-color: #8d5c44;
+            color: #fff;
+            padding: 16px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .task-item.done {
+            background-color: #bfaea4;
+            text-decoration: line-through;
+        }
+
+        .task-item .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .task-item .description {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .task-item .info {
+            font-size: 12px;
+            margin-top: 8px;
+            color: #ddd;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-group a {
+            background-color: #fff;
+            color: #333;
+            text-decoration: none;
+            padding: 6px 10px;
+            border-radius: 10px;
             font-size: 13px;
-            margin-right: 5px;
-            cursor: pointer;
-            display: inline-block;
         }
 
-        .btn-warning {
-            background-color: #f1c40f;
-            color: #000;
-        }
-
-        .btn-secondary {
-            background-color: #7f8c8d;
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #e74c3c;
-            color: white;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 20px 10px;
-            }
-
-            table, th, td {
-                font-size: 13px;
+        @media (max-width: 600px) {
+            .btn-group {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <div class="top-bar">
-        <h2>Halo, <?= htmlspecialchars($user['username']) ?> (<?= $role ?>)</h2>
-        <div>
-            <a href="logout.php" class="logout">Logout</a>
-            <?php if ($role !== 'pelaksana'): ?>
-                <a href="add_task.php" class="add-task">+ Buat Tugas</a>
-            <?php endif; ?>
+    <div class="task-wrapper">
+        <div class="top-bar">
+            <h2>Halo, <?= htmlspecialchars($user['username']) ?> (<?= $role ?>)</h2>
+            <div>
+                <a href="logout.php">Logout</a>
+                <?php if ($role !== 'pelaksana'): ?>
+                    <a href="add_task.php">+ Buat Tugas</a>
+                <?php endif; ?>
+            </div>
         </div>
-    </div>
 
-    <h3>Daftar Tugas</h3>
-    <div class="table-responsive">
-        <table>
-            <tr>
-                <th>Judul</th>
-                <th>Deskripsi</th>
-                <th>Dibuat oleh</th>
-                <th>Ditugaskan ke</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-            <?php while ($task = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($task['title']) ?></td>
-                    <td><?= htmlspecialchars($task['description']) ?></td>
-                    <td><?= htmlspecialchars($task['creator'] ?? '-') ?></td>
-                    <td><?= htmlspecialchars($task['assignee'] ?? '-') ?></td>
-                    <td><?= htmlspecialchars($task['status']) ?></td>
-                    <td>
-                        <?php if ($role === 'pelaksana' && $task['assigned_to'] == $user_id): ?>
-                            <a href="update_status.php?id=<?= $task['id'] ?>" class="btn btn-warning">Ubah Status</a>
-                        <?php elseif ($role !== 'pelaksana'): ?>
-                            <a href="edit_task.php?id=<?= $task['id'] ?>" class="btn btn-secondary">Edit</a>
-                            <a href="delete_task.php?id=<?= $task['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus tugas ini?')">Hapus</a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </table>
+        <?php while ($task = $result->fetch_assoc()): ?>
+            <div class="task-item <?= $task['status'] === 'selesai' ? 'done' : '' ?>">
+                <div class="title"><?= htmlspecialchars($task['title']) ?></div>
+                <div class="description"><?= htmlspecialchars($task['description']) ?></div>
+                <div class="info">
+                    Dibuat oleh: <?= htmlspecialchars($task['creator'] ?? '-') ?> | 
+                    Ditugaskan ke: <?= htmlspecialchars($task['assignee'] ?? '-') ?> | 
+                    Status: <?= htmlspecialchars($task['status']) ?>
+                </div>
+                <div class="btn-group">
+                    <?php if ($role === 'pelaksana' && $task['assigned_to'] == $user_id): ?>
+                        <a href="update_status.php?id=<?= $task['id'] ?>">Ubah Status</a>
+                    <?php elseif ($role !== 'pelaksana'): ?>
+                        <a href="edit_task.php?id=<?= $task['id'] ?>">Edit</a>
+                        <a href="delete_task.php?id=<?= $task['id'] ?>" onclick="return confirm('Yakin hapus tugas ini?')">Hapus</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endwhile; ?>
     </div>
-</div>
-
 </body>
 </html>

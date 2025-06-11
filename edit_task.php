@@ -27,16 +27,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Edit Tugas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Fredoka', sans-serif;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: url('img/gradient-background-3840x2160-10786.jpg') no-repeat center center fixed;
+            background: url('img/e69a4f74b1b0fbdc70c9a6428aa4221e.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
             display: flex;
@@ -45,64 +48,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .container {
-             margin-top: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 25px;
             padding: 40px;
             max-width: 500px;
             width: 95%;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
             color: #fff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
         h2 {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 26px;
         }
 
         form {
-            margin-top: 20px;
             text-align: left;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
         }
 
         input[type="text"],
         textarea,
         select {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
+            padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: none;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 14px;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #ddd;
         }
 
         button {
-           background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background-color: #5d3c2c;
+            color: #fff;
             border: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            border-radius: 6px;
+            padding: 12px 20px;
+            font-size: 15px;
+            border-radius: 20px;
             cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background-color: #8d5c44;
         }
 
         .back-link {
-            display: inline-block;
+            display: block;
             margin-top: 20px;
+            text-align: center;
             text-decoration: none;
-            color: #333;
+            color: #fff;
+            font-size: 14px;
+            transition: color 0.2s;
         }
 
         .back-link:hover {
+            color: #ffc0a0;
             text-decoration: underline;
-        }
-
-        label {
-            font-weight: 500;
         }
     </style>
 </head>

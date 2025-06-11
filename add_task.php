@@ -1,5 +1,10 @@
 <?php
-include 'auth.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require 'config.php';
+require 'auth.php';
 
 $user = $_SESSION['user'];
 
@@ -10,18 +15,25 @@ if ($user['role'] === 'pelaksana') {
 
 $pelaksana = $conn->query("SELECT id, username FROM users WHERE role = 'pelaksana'");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title = $_POST['title'];
-    $desc = $_POST['description'];
+    $description = $_POST['description'];
     $assigned_to = $_POST['assigned_to'];
     $created_by = $user['id'];
 
-    $stmt = $conn->prepare("INSERT INTO tasks (title, description, assigned_to, created_by) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssii", $title, $desc, $assigned_to, $created_by);
-    $stmt->execute();
+    if (!empty($title) && !empty($assigned_to)) {
+        $stmt = $conn->prepare("INSERT INTO tasks (title, description, assigned_to, created_by) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssii", $title, $description, $assigned_to, $created_by);
 
-    header("Location: dashboard.php");
-    exit();
+        if ($stmt->execute()) {
+            header("Location: dashboard.php");
+            exit();
+        } else {
+            $error = "Gagal menambahkan tugas: " . $stmt->error;
+        }
+    } else {
+        $error = "Judul dan Pelaksana wajib diisi.";
+    }
 }
 ?>
 
@@ -31,41 +43,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Buat Tugas</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap');
+
         * {
             box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Fredoka', sans-serif;
         }
 
         body {
             margin: 0;
             padding: 0;
-            background: url('img/gradient-background-3840x2160-10786.jpg') no-repeat center center fixed;
+            background: url('img/e69a4f74b1b0fbdc70c9a6428aa4221e.jpg') no-repeat center center fixed;
             background-size: cover;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: start;;
+            align-items: flex-start;
+            padding: 40px 10px;
         }
 
         .container {
-            margin-top: 50px;
-            background: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
-            width: 95%;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            border-radius: 25px;
+            padding: 30px 25px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
             color: #fff;
         }
 
         h2 {
+            font-size: 24px;
+            text-align: center;
             margin-bottom: 20px;
         }
 
-        form {
-            margin-top: 20px;
-            text-align: left;
+        form label {
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
         }
 
         input[type="text"],
@@ -73,53 +91,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         select {
             width: 100%;
             padding: 10px;
-            margin-top: 5px;
             margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            border: none;
+            border-radius: 10px;
+            background-color: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        textarea {
+            resize: vertical;
         }
 
         button {
-           background: rgba(255, 255, 255, 0.1);
-            color: white;
+            background-color: #5d3c2c;
+            color: #fff;
             border: none;
+            border-radius: 20px;
             padding: 10px 20px;
+            width: 100%;
             font-size: 14px;
-            border-radius: 6px;
             cursor: pointer;
         }
 
         button:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background-color: #8d5c44;
         }
 
         .back-link {
-            display: inline-block;
+            display: block;
             margin-top: 20px;
+            text-align: center;
             text-decoration: none;
-            color: #333;
+            color: #fff;
+            font-size: 14px;
         }
 
         .back-link:hover {
             text-decoration: underline;
         }
 
-        label {
-            font-weight: 500;
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Buat Tugas Baru</h2>
+        
+        <?php if (!empty($error)): ?>
+            <div class="error"><?= htmlspecialchars($error) ?></div>
+        <?php endif; ?>
+
         <form method="POST">
-            <label for="title">Judul:</label>
+            <label for="title">Judul</label>
             <input type="text" id="title" name="title" required>
 
-            <label for="description">Deskripsi:</label>
+            <label for="description">Deskripsi</label>
             <textarea id="description" name="description" rows="4"></textarea>
 
-            <label for="assigned_to">Tugas untuk:</label>
+            <label for="assigned_to">Tugaskan ke</label>
             <select id="assigned_to" name="assigned_to" required>
                 <option value="">-- Pilih Pelaksana --</option>
                 <?php while ($p = $pelaksana->fetch_assoc()): ?>
